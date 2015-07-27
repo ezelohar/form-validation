@@ -65,11 +65,24 @@ class DeliveryMethodOptions extends Model
 	 */
 	protected $weight_to;
 
+	/**
+	 * Notes
+	 * @var string
+	 */
+	protected $notes;
 
-	protected $inserStatement;
-	protected $updateStatement;
 
+	public function prepareVars($data) {
+		$vars = $this->cleanVars(get_object_vars($this));
 
+		foreach ($vars as $name=>$val) {
+			if (!isset($data[$name])) {
+				$this[$name] = null;
+			} else {
+				$this[$name] = $data[$name];
+			}
+		}
+	}
 
 	/**
 	 * Fetch all options for delivery method
@@ -103,22 +116,56 @@ class DeliveryMethodOptions extends Model
 		return parent::fetchOne($id, $table);
 	}
 
-	public function save()
+	public function save($data = array())
 	{
+		if (empty($data)) {
+			$data = Input::getInstance()->post()->item();
+		}
 
+		$this->prepareVars($data);
+
+		$statement = $this->_db->prepare("INSERT INTO " . self::TABLE_NAME . ' (`id`, `delivery_method_id`, `url`, `name`, `weight_from`, `weight_to`)');
+
+		# currently hardcoded. I would use annotations to write down information about every table column
+		$statement->bind_param('iissdd', $this->id, $this->delivery_method_id, $this->url, $this->name, $this->weight_from, $this->weight_to);
+		$statement->execute();
+
+		$lastInsertId = $statement->insert_id;
+
+		$statement->close();
+
+		return $this->fetchOne($lastInsertId);
 	}
+
 
 	public function delete($id, $table = self::TABLE_NAME)
 	{
+		return array();
+		/* option can't be deleted */
 		return parent::delete($id, $table);
 	}
 
-	public function update($id)
+	public function update($id, $data = array())
 	{
+		if (empty($data)) {
+			$data = Input::getInstance()->put()->item();
+			$data['id'] = $id;
+		}
 
+		$this->prepareVars($data);
+
+
+		$statement = $this->_db->prepare("UPDATE " . self::TABLE_NAME . " SET `url` = ? , `name` = ?, `weight_from` = ?, `weight_to` = ?, `notes` = ? WHERE id = ?");
+		$statement->bind_param('ssddsi', $this->url, $this->name, $this->weight_from, $this->weight_to, $this->notes, $this->id);
+		$statement->execute();
+
+
+		$statement->close();
+
+		return $this->fetchOne($this->id);
 	}
 
-	public function saveAll($data) {
-		$statementInsertOption = $this->_db->prepare("INSERT INTO " . self::TABLE_NAME . ' ()')
+	public function saveMultiple($data) {
+
 	}
 }

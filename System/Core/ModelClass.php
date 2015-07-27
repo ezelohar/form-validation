@@ -66,6 +66,8 @@ abstract class Model
 		return $this->result_array($results);
 	}
 
+	abstract public function prepareVars($data);
+
 
 	/**
 	 *

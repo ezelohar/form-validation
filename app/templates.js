@@ -70,14 +70,18 @@ FormController.prototype.optionsTemplate = function (data, methodID) {
  */
 FormController.prototype.singleMethodTemplate = function (item) {
 	var price = '', placeholder = 'Nenabizime', range = 'fv-show-range'
-	if (!item.fixed_price === null) {
+
+	if (item.status == DELIVERY_METHOD_PAID) {
 		price = item.fixed_price;
-		placeholder = '';
+	} else if (item.status == DELIVERY_METHOD_FREE) {
+		price = 0;
 	}
 
 	if (item.status != DELIVERY_METHOD_RANGE) {
 		range = '';
 	}
+
+
 
 	var str = '<tr class="fv-method-data fv-hover-actions jsMethod ' + range + '" data-method-id="' + item.id + '">' +
 			'<td>' +

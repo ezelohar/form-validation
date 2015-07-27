@@ -197,7 +197,7 @@ FormController.prototype.saveForm = function () {
 			save: 'all',
 			data: methodData,
 			callback: function (e) {
-				console.log(e);
+				Form.run();
 			}
 		});
 	} else {

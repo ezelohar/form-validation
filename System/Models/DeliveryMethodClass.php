@@ -13,6 +13,7 @@ use System\Core\Model;
 use System\Core\Database;
 use System\Helpers\Input;
 use System\Api;
+use System\Helpers\Response;
 
 class DeliveryMethod extends Model
 {
@@ -69,6 +70,20 @@ class DeliveryMethod extends Model
 	 */
 	protected $active;
 
+
+	public function prepareVars($data) {
+		$vars = $this->cleanVars(get_object_vars($this));
+
+		foreach ($vars as $name=>$val) {
+			if (!isset($data[$name])) {
+				$this[$name] = null;
+			} else {
+				$this[$name] = $data[$name];
+			}
+		}
+	}
+
+
 	/**
 	 * @return mixed
 	 */
@@ -99,16 +114,7 @@ class DeliveryMethod extends Model
 		}
 
 		/* insert new methods */
-		$vars = $this->cleanVars(get_object_vars($this));
-
-
-		foreach ($vars as $name=>$val) {
-			if (!isset($data[$name])) {
-				$this[$name] = 'NULL';
-			} else {
-				$this[$name] = $data[$name];
-			}
-		}
+		$this->prepareVars($data);
 
 		$statement = $this->_db->prepare("INSERT INTO " . self::TABLE_NAME . " (`id`, `store_id`, `name`, `status`, `fixed_price`, `active`) VALUES (?, ?, ?, ?, ?, ?)");
 		$statement->bind_param('iisdi', $this->id, $this->store_id, $this->name, $this->status, $this->fixed_price, $this->active);
@@ -117,10 +123,6 @@ class DeliveryMethod extends Model
 		$last_insert_id = $statement->insert_id;
 
 		$statement->close();
-
-		if ($save === 'all') {
-			return $last_insert_id;
-		}
 
 		return $this->fetchOne($last_insert_id);
 	}
@@ -132,23 +134,43 @@ class DeliveryMethod extends Model
 
 	public function update($id, $data = array())
 	{
+		if (empty($data)) {
+			$data = Input::getInstance()->put()->item();
+			$data['id'] = $id;
+		}
 
+		$this->prepareVars($data);
+
+
+		$statement = $this->_db->prepare("UPDATE " . self::TABLE_NAME . " SET `store_id`= ?, `status` = ?, `fixed_price` = ? WHERE id = ?");
+		$statement->bind_param('iidi', $this->store_id, $this->status, $this->fixed_price, $this->id);
+		$statement->execute();
+
+
+		$statement->close();
+
+		return $this->fetchOne($this->id);
 	}
 
 	/**
 	 * Made for sake of task, just to finish it on time, FAST CODE
 	 * @param $data
 	 */
-	private function saveAll($data) {
+	private function saveMulti($data) {
 
 		$statementUpdateMethod = $this->_db->prepare("UPDATE " . self::TABLE_NAME . " SET `store_id`= ?, `status` = ?, `fixed_price` = ? WHERE id = ?");
 		foreach($data as $key=>$val) {
 
 			/* validate results */
-			$statement->bind_param('iidi', $this->store_id, $val['status'], $val['fixed_price'], $val['id']);
-			$statement->execute();
+			$statementUpdateMethod->bind_param('iidi', $this->store_id, $val['status'], $val['fixed_price'], $val['id']);
+			$statementUpdateMethod->execute();
+
+
 		}
 
-		$statement->close();
+		$statementUpdateMethod->close();
+
+		$response = new Response('Info updated');
+		$response->toJSON();
 	}
 }

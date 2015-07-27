@@ -40,11 +40,4 @@ class Api {
 			$response->toJSON();
 		}
 	}
-
-	public static function readAnnotations($class) {
-		$r = new ReflectionClass($class);
-		$doc = $r->getDocComment();
-		preg_match_all('#@(.*?)\n#s', $doc, $annotations);
-		return $annotations[1];
-	}
 }
