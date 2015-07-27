@@ -36,7 +36,7 @@ class Input
 				$params = (isset($_GET)) ? $_GET : array();
 				break;
 			case 'POST':
-				$params = (isset($_POST)) ? $_POST : array();
+				$params = (isset($_POST) && isset($_POST['data'])) ? json_decode($_POST['data'], true, 512, JSON_UNESCAPED_UNICODE) : array();
 				break;
 			case 'PUT':
 				$_SERVER['REQUEST_METHOD']==="PUT" ? parse_str(file_get_contents('php://input', false , null, -1 , $_SERVER['CONTENT_LENGTH'] ), $_PUT): $_PUT=array();

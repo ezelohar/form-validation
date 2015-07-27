@@ -32,7 +32,7 @@ NotifierManager.prototype.prepare = function (notification, type, object) {
 	})
 }
 
-Notifier.prototype.flush = function () {
+NotifierManager.prototype.flush = function () {
 
 }
 

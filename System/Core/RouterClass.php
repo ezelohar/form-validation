@@ -20,7 +20,8 @@ class Router
 	private $_routesMapper = array(
 		'methods' 	=> 'DeliveryMethod',
 		'options' 	=> 'DeliveryMethodOptions',
-		'ranges' 	=> 'DeliveryMethodRanges'
+		'ranges' 	=> 'DeliveryMethodRanges',
+		'bulk'		=> 'Bulk'
 	);
 
 	/**

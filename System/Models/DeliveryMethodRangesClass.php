@@ -15,17 +15,19 @@ use System\Helpers\Input;
 
 class DeliveryMethodRanges extends Model
 {
-	/**
-	 * connected database object
-	 * @var Database
-	 */
-	protected $_db;
 
 	/**
 	 * Model table name
 	 * @var string
 	 */
-	protected $table_name = 'delivery_method_ranges';
+	const TABLE_NAME = 'delivery_method_ranges';
+
+
+	/**
+	 * connected database object
+	 * @var Database
+	 */
+	protected $_db;
 
 	/**
 	 * Options id
@@ -73,7 +75,7 @@ class DeliveryMethodRanges extends Model
 	{
 		$delivery_method_id = Input::getInstance()->get()->item('delivery_method_id');
 
-		$query = "SELECT * FROM " . $this->table_name;
+		$query = "SELECT * FROM " . self::TABLE_NAME;
 
 		if ($delivery_method_id !== null) {
 			$query .= ' WHERE delivery_method_id = ?';
@@ -88,13 +90,15 @@ class DeliveryMethodRanges extends Model
 
 		$results = $preparedObj->get_result();
 
+		$preparedObj->close();
+
 
 		return $this->result_array($results);
 	}
 
-	public function fetchOne($id)
+	public function fetchOne($id, $table = self::TABLE_NAME)
 	{
-		return $id;
+		return parent::fetchOne($id, $table);
 	}
 
 	public function save()
@@ -102,9 +106,9 @@ class DeliveryMethodRanges extends Model
 
 	}
 
-	public function delete($id)
+	public function delete($id, $table = self::TABLE_NAME)
 	{
-
+		return parent::delete($id, $table);
 	}
 
 	public function update($id)

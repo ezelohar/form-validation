@@ -3,10 +3,10 @@
 /* Form controller templates */
 
 FormController.prototype.optionsTemplate = function (data, methodID) {
-	var id = '', url = '', name = '', weight_from = '', weight_to = '', notes = '';
+	var id = 0, url = '', name = '', weight_from = '', weight_to = '', notes = '';
 
 	if (typeof data !== 'undefined') {
-		id = (data.id != null) ? data.id : '';
+		id = (data.id != null) ? data.id : 0;
 		url = (data.url != null) ? data.url : '';
 		name = (data.name != null) ? data.name : '';
 		weight_from = (data.weight_from != null) ? data.weight_from : '';
@@ -122,7 +122,7 @@ RangeController.prototype.rangeTemplate = function(data) {
 	var from = '', to = '', price = '', id = 0;
 
 	if (typeof data !== 'undefined') {
-		id = (data.id != null) ? data.id : '';
+		id = (data.id != null) ? data.id : 0;
 		from = (data.range_from != null) ? data.range_from : '';
 		to = (data.range_to != null) ? data.range_to : '';
 		price = (data.price != null) ? data.price : '';

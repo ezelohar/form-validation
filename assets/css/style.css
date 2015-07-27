@@ -118,7 +118,7 @@ a {
 }
 
 /*options specific */
-.fv-options-holder table {
+.fv-options-holder table, .fv-range-holder table {
 	width: 100%;
 }
 

@@ -34,9 +34,15 @@ FormController.prototype.buildDisplay = function (data) {
 	$('.jsTable').find('tbody').html(form);
 };
 
-
+/**
+ * Bind events
+ */
 FormController.prototype.bindEvents = function () {
 	var self = this;
+
+	/**
+	 * Open up adding of range
+	 */
 	$('.jsTable').on('click', '.jsUseRange', function (e) {
 		e.preventDefault();
 		var parent = $(this).parent().parent().parent();
@@ -52,6 +58,9 @@ FormController.prototype.bindEvents = function () {
 		}
 	});
 
+	/**
+	 * Open up delivery method settings
+	 */
 	$('.jsTable').on('click', '.jsOpenSettings', function (e) {
 		e.preventDefault();
 
@@ -82,6 +91,10 @@ FormController.prototype.bindEvents = function () {
 		$(this).toggleClass('fv-button-active');
 	});
 
+
+	/**
+	 * Open up existing delivery range
+	 */
 	$('.jsTable').on('click', '.jsLoadRanges', function (e) {
 		e.preventDefault();
 
@@ -97,8 +110,19 @@ FormController.prototype.bindEvents = function () {
 			subTableElement.toggle();
 		}
 	});
+
+	$('#saveButton').on('click', function (e) {
+		e.preventDefault();
+		self.saveForm();
+	})
 };
 
+/**
+ * Returns element used to contain options or ranges, if element not found return false
+ * @param element
+ * @param ident
+ * @returns {*}
+ */
 FormController.prototype.getSubTableElement = function (element, ident) {
 	var elementFirst = element.next(), elementSecond = element.next().next();
 
@@ -125,7 +149,6 @@ FormController.prototype.saveForm = function () {
 	/*Fetch method data */
 	var self = this, tableRows = $('.jsTable tr.fv-method-data'), methodData = [], rangeData = [], optionsData = [], error = false;
 
-	console.log(tableRows);
 	$.each(tableRows, function (i, item) {
 		var methodRow = {};
 		/* Get ID */
@@ -170,17 +193,26 @@ FormController.prototype.saveForm = function () {
 
 
 	if (!error && Validate.isValid()) {
-		API.save(URL_BULK_SAVE, {
-
+		API.save(URL_DELIVERY_METHOD, {
+			save: 'all',
+			data: methodData,
+			callback: function (e) {
+				console.log(e);
+			}
 		});
 	} else {
 		Notifier.flush();
 	}
 };
 
+/**
+ *
+ * Collect all existing ranges and validate them
+ * @param id int
+ * @returns {Array}
+ */
 FormController.prototype.fetchRangesData = function (id) {
 	var trs = $('#range_' + id).find('table tr'), rangesData = [];
-	console.log(trs);
 	$.each(trs, function(i, item) {
 		var tr = $(item);
 
@@ -189,8 +221,6 @@ FormController.prototype.fetchRangesData = function (id) {
 		var obj = {
 
 		}
-
-		console.log(inputs);
 		$.each(inputs, function(i, input) {
 			input = $(input);
 
@@ -214,6 +244,11 @@ FormController.prototype.fetchRangesData = function (id) {
 	return rangesData;
 }
 
+/**
+ * Fetch options information
+ * @param id
+ * @returns {*}
+ */
 FormController.prototype.fetchMethodOptions = function (id) {
 	var inputs = $('#option_' + id).find('input, textarea'), optionsData = {}, isValid = true;
 	$.each(inputs, function (i, item) {
