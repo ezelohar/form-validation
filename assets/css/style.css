@@ -1,0 +1,137 @@
+a {
+	color: #6eafdc;
+}
+
+.fv-main-table {
+	border: 1px solid #ccc;
+	width: 100%;
+	margin-top: 20px; /* just to move it from edge */
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+.fv-main-table > thead {
+	background: -webkit-linear-gradient(#f1f1f1, #e6e6e6);
+	background: -o-linear-gradient(#f1f1f1, #e6e6e6);
+	background: -moz-linear-gradient(#f1f1f1, #e6e6e6);
+	background: linear-gradient(#f1f1f1, #e6e6e6); /* Standard syntax */
+	border-bottom: 1px solid #dadada;
+}
+
+.fv-main-table > thead th, .fv-main-table > tbody > tr > td {
+	padding: 10px 20px;
+	font-size: 12px;
+}
+
+.fv-main-table tr {
+	border-bottom: 1px solid #dadada;
+}
+
+.fv-main-table > tbody > tr:not(.fv-range-holder):hover > :first-child {
+	padding-left: 19px;
+	border-left: 2px solid #4189c6;
+}
+
+.fv-main-table > tbody > tr:hover {
+	background-color: #f2f2f2;
+}
+
+
+.fv-main-table input {
+	text-align: right;
+}
+
+.fv-color-blue-gradient {
+	background: -webkit-linear-gradient(#66BEF2, #378acd);
+	background: -o-linear-gradient(#66BEF2, #378acd);
+	background: -moz-linear-gradient(#66BEF2, #378acd);
+	background: linear-gradient(#66BEF2, #378acd); /* Standard syntax */
+
+	border: 1px solid #4189c6;
+	color: #ffffff;
+}
+
+.fv-button-active {
+	border: 1px solid #2980b9;
+	background: -webkit-linear-gradient(#2980b9, #3498db);
+	background: -o-linear-gradient(#2980b9, #3498db);
+	background: -moz-linear-gradient(#2980b9, #3498db);
+	background: linear-gradient(#2980b9, #3498db); /* Standard syntax */
+}
+
+.fv-hidden {
+	visibility: hidden;
+}
+
+/* display all action buttons in tr */
+.fv-display-actions .fv-hidden {
+	visibility: visible;
+}
+
+.fv-hover-actions:hover .fv-hidden {
+	visibility: visible;
+}
+
+/* range hidden */
+
+.fv-range {
+	display: none;
+}
+
+
+.fv-show-range .fv-range {
+	display: block;
+}
+
+.fv-show-range .fv-regular {
+	display: none;
+}
+
+
+/* Range holder */
+.fv-range-holder, .fv-options-holder {
+	background-color: #f2f2f2;
+}
+
+.fv-range-holder > td, .fv-options-holder > td {
+	padding: 0px !important;
+}
+
+.fv-range-holder table td, .fv-options-holder table td {
+	padding: 10px 20px;
+	font-size: 12px;
+}
+.fv-range-holder table td.first {
+	padding-right: 0px;
+}
+
+.fv-range-holder .first {
+	padding-right: 0px;
+}
+
+.fv-range-holder span.fv-range-left {
+	margin-right: 45px;
+}
+
+.fv-range-holder input.range {
+	width: 100px;
+}
+
+/*options specific */
+.fv-options-holder table {
+	width: 100%;
+}
+
+.error {
+	border: 1px solid #ff2f39;
+}
+
+
+
+/* Input css */
+
+input, textarea {
+	padding: 5px 10px;
+	border: 1px solid #eee;
+	border-radius: 4px;
+}
