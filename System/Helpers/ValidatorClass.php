@@ -26,11 +26,11 @@ class Validator
 			return $validator;
 		}
 
-		if (!isset($data[$name]) && isset($validator['default'])) {
+		if ((!isset($data[$name]) || trim($data[$name]) == '') && isset($validator['default'])) {
 			return ($validator['default'] === 'null') ? null : $validator['default'];
 		}
 
-		if (!isset($data[$name]) && !isset($validator['default'])) {
+		if ((!isset($data[$name]) || trim($data[$name]) == '') && !isset($validator['default'])) {
 			$response = new Response("Field {$name} is mandatory in data: ". serialize($data), 200, true);
 			$response->toJSON();
 		}
@@ -72,6 +72,19 @@ class Validator
 	 */
 	protected function string($value) {
 		return is_string($value);
+	}
+
+	/**
+	 * Check if value is url
+	 * @param $value
+	 * @return bool
+	 */
+	protected function url($value) {
+		if(filter_var($value, FILTER_VALIDATE_URL)){
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 

@@ -75,7 +75,10 @@ class DeliveryMethodRanges extends Model
 	protected $active;
 
 
-
+	/**
+	 * Fields description used to describe their validation rules
+	 * @var array
+	 */
 	protected $_field_properties = array(
 		'id' => array(
 			'default' => 'null',
@@ -253,7 +256,11 @@ class DeliveryMethodRanges extends Model
 		return parent::delete($id, $table);
 	}
 
-
+	/**
+	 * Deactivate all ID's in provided array
+	 * @param array $data
+	 * @return bool
+	 */
 	public function deleteMany( array $data) {
 		# get hardcoded store id
 		$this->store_id = $this->getStoreID();

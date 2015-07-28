@@ -18,14 +18,27 @@ abstract class Model
 	 */
 	protected $_db;
 
+	/**
+	 * We are hardcoding store_id
+	 * User must have defined store_id to forbid cross inserts. With every table having store_id,
+	 * we don't need to check before insert if data is valid for that store id, but we are forcing it always to same store
+	 * EXTREMELY IMPORTANT
+	 * @var int
+	 */
 	protected $store_id = 1;
 
+	/**
+	 * Get Database instance
+	 */
 	public function __construct()
 	{
 		$this->_db = Database::getInstance()->getDB();
 	}
 
-
+	/**
+	 * Hardcoded function to retrive store id from some source or User library
+	 * @return int
+	 */
 	protected function getStoreID() {
 		return $this->store_id;
 	}

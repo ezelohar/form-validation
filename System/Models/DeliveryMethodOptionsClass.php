@@ -79,7 +79,10 @@ class DeliveryMethodOptions extends Model
 	 */
 	protected $notes;
 
-
+	/**
+	 * Fields description used to describe their validation rules
+	 * @var array
+	 */
 	protected $_field_properties = array(
 		'id' => array(
 			'default' => 'null',
@@ -94,11 +97,11 @@ class DeliveryMethodOptions extends Model
 			)
 		),
 		'store_id' => array(
-			'default' => 'null',
+			'default' => 1,
 			'validators' => array()
 		),
 		'url' => array(
-			'default' => null,
+			'default' => 'null',
 			'validators' => array(
 				'url'
 			)
@@ -221,7 +224,7 @@ class DeliveryMethodOptions extends Model
 
 		$this->prepareVars($data);
 
-		$statement = $this->_db->prepare("INSERT INTO " . self::TABLE_NAME . " (`id`, `delivery_method_id`, `store_id`, `url`, `name`, `weight_from`, `weight_to`) VALUES (NULL, ?, ?, ?, ?, ?, ?)");
+		$statement = $this->_db->prepare("INSERT INTO " . self::TABLE_NAME . " (`id`, `delivery_method_id`, `store_id`, `url`, `name`, `weight_from`, `weight_to`) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
 		if ($statement === false) {
 			$response = new Response('Prepare statement has error '. htmlspecialchars($this->_db->error), 200, true);
@@ -320,10 +323,10 @@ class DeliveryMethodOptions extends Model
 		# get hardcoded store id
 		$this->store_id = $this->getStoreID();
 
-		$statement = $this->_db->prepare("INSERT INTO " . self::TABLE_NAME . " (`id`, `delivery_method_id`, `store_id`, `url`, `name`, `weight_from`, `weight_to`) VALUES (NULL, ?, ?, ?, ?, ?, ?)");
+		$statement = $this->_db->prepare("INSERT INTO " . self::TABLE_NAME . " (`id`, `delivery_method_id`, `store_id`, `url`, `name`, `weight_from`, `weight_to`) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
 		if ($statement === false) {
-			$response = new Response('Prepare statement has error '. htmlspecialchars($this->_db->error), 200, true);
+			$response = new Response('Prepare statement has error at '. __LINE__. ' ' . htmlspecialchars($this->_db->error), 200, true);
 			$response->toJSON();
 		}
 
@@ -339,7 +342,7 @@ class DeliveryMethodOptions extends Model
 
 			$execute = $statement->execute();
 			if ($execute === false) {
-				$response = new Response('Query was unable to execute: ' . htmlspecialchars($statement->error), 200, true);
+				$response = new Response('Query was unable to execute: '. __LINE__. ' ' .  htmlspecialchars($statement->error), 200, true);
 				$response->toJSON();
 			}
 		}

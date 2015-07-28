@@ -36,6 +36,7 @@ class Input
 				$params = (isset($_GET)) ? $_GET : array();
 				break;
 			case 'POST':
+				# we forced post data to be in key "data". Everyting else will be found as "invisible" by this class
 				$params = (isset($_POST) && isset($_POST['data'])) ? json_decode($_POST['data'], true, 512, JSON_UNESCAPED_UNICODE) : array();
 				break;
 			case 'PUT':

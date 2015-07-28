@@ -1,17 +1,33 @@
+/**
+ * Used to validate fields
+ * To enable autovalidation, give Input fields next attributes
+ * 	validate="separated comma values for validate types", if validate isn't set we wont be do any validation in input
+ * 		possible values numeric,compare,url
+ * 	empty (if this is set, input can be empty)
+ * 	compare-to (with witch input to be compared from same row)
+ * 	compare-type (how to compare)
+ */
+
 var ValidateClass = function() {
 
 };
 
-
+/**
+ * Clean all input fields from error
+ */
 ValidateClass.prototype.clean = function () {
 	$('.error').each(function (i, item) {
 		$(item).removeClass('error');
 	});
-}
+};
 
+/**
+ * Check if there are input elements with class error
+ * @returns {boolean}
+ */
 ValidateClass.prototype.isValid = function () {
-	return $('.error').length === 0;
-}
+	return $('input.error, textarea.error').length === 0;
+};
 
 /**
  * Validate input fields. Validators are defined by giving input field attribute validate with validator names

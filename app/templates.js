@@ -1,7 +1,12 @@
 /* Templates*/
 
-/* Form controller templates */
 
+/**
+ * Return options template based on data received from api call
+ * @param data
+ * @param methodID
+ * @returns {string}
+ */
 FormController.prototype.optionsTemplate = function (data, methodID) {
 	var id = 0, url = '', name = '', weight_from = '', weight_to = '', notes = '';
 
@@ -105,8 +110,12 @@ FormController.prototype.singleMethodTemplate = function (item) {
 };
 
 
-
-/*Range controller templates */
+/**
+ * Creates a holder for range row
+ * @param methodID
+ * @param rows
+ * @returns {string}
+ */
 RangeController.prototype.generateRangeTemplate = function (methodID, rows) {
 	var rows = rows || this.rangeTemplate();
 
@@ -122,6 +131,11 @@ RangeController.prototype.generateRangeTemplate = function (methodID, rows) {
 	return str;
 };
 
+/**
+ * Create an range row
+ * @param data
+ * @returns {string}
+ */
 RangeController.prototype.rangeTemplate = function(data) {
 	var from = '', to = '', price = '', id = 0;
 

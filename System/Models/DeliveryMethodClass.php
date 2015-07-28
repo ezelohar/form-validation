@@ -70,6 +70,10 @@ class DeliveryMethod extends Model
 	 */
 	protected $active;
 
+	/**
+	 * Fields description used to describe their validation rules
+	 * @var array
+	 */
 	protected $_field_properties = array(
 		'id' => array(
 			'default' => 'null',

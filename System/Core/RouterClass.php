@@ -206,7 +206,10 @@ class Router
 		return $this->_method;
 	}
 
-
+	/**
+	 * Return string representing class(model)
+	 * @return string
+	 */
 	public function buildModel() {
 		return 'System\Models\\' . $this->_routesMapper[$this->getModel()];
 	}

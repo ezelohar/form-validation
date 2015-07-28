@@ -1,5 +1,5 @@
 /**
- * Main form controller
+ * Main form controller, used to oranize all form main actions
  * @constructor
  */
 var FormController = function () {

@@ -1,17 +1,32 @@
-var RangeController = function ($methodHolder, methodID) {
+/**
+ * Controller for inline ranges
+ */
+
+
+var RangeController = function () {
 	this.deletedRows = [];
 
 	this.bindEvents();
 };
 
+/**
+ * Bind all events used for ranges
+ */
 RangeController.prototype.bindEvents = function() {
 	var self = this;
+
+	/**
+	 * Add new empty row
+	 */
 	$('.jsTable').on('click', '.jsAddNewRange', function(e) {
 		e.preventDefault();
 		var tbody = $(this).parent().parent().parent();
 		tbody.append(self.rangeTemplate());
 	});
 
+	/**
+	 * Remove row
+	 */
 	$('.jsTable').on('click', '.jsRemoveRangeRow', function(e) {
 		e.preventDefault();
 
@@ -46,6 +61,11 @@ RangeController.prototype.bindEvents = function() {
 	});
 };
 
+/**
+ * Fetch existing ranges
+ * @param element
+ * @param methodID
+ */
 RangeController.prototype.getRanges = function(element, methodID) {
 	var self = this;
 	API.get(URL_DELIVERY_METHOD_RANGES, {

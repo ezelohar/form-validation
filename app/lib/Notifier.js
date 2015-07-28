@@ -1,6 +1,12 @@
+/*
+ Notifier Type's
+ */
+var NOTIFIER_ERROR = 0;
+var NOTIFIER_SUCCESS = 1;
+
 var NotifierManager = function() {
 	this.notifications = [];
-}
+};
 
 
 /**
@@ -31,7 +37,7 @@ NotifierManager.prototype.display = function(notification, type) {
 	$('#myModalBody').html(content);
 
 	$('#myModal').modal('toggle');
-}
+};
 
 /**
  * Add notifications to queeue and display them all
@@ -53,7 +59,7 @@ NotifierManager.prototype.prepare = function (notification, type, object) {
 		type: type,
 		object: object
 	})
-}
+};
 
 
 /**
@@ -74,12 +80,15 @@ NotifierManager.prototype.flush = function () {
 	$('#myModalBody').html(str);
 
 	$('#myModal').modal('toggle');
-}
+};
 
 
-
-
+/**
+ * Check if type is error type
+ * @param type
+ * @returns {boolean}
+ */
 NotifierManager.prototype.isError = function(type) {
 	return type === NOTIFIER_ERROR;
-}
+};
 

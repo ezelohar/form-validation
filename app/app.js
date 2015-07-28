@@ -1,12 +1,3 @@
-
-/*
- API URL's
- */
-var URL_DELIVERY_METHOD = 'methods';
-var URL_DELIVERY_METHOD_OPTIONS = 'options';
-var URL_DELIVERY_METHOD_RANGES = 'ranges';
-var URL_BULK_SAVE = 'bulk';
-
 /*
  Delivery method statuses
  */
@@ -16,11 +7,7 @@ var DELIVERY_METHOD_PAID = 2;
 var DELIVERY_METHOD_RANGE = 3;
 
 
-/*
- Notifier Type's
- */
-var NOTIFIER_ERROR = 0;
-var NOTIFIER_SUCCESS = 1;
+
 
 
 /** Initialize  files **/
