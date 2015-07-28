@@ -1,4 +1,3 @@
-/** APP Config **/
 
 /*
  API URL's

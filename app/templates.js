@@ -149,7 +149,7 @@ RangeController.prototype.rangeTemplate = function(data) {
 				'<input type="number" step="any" name="price" value="' + price +'" /> Kč' +
 			'</td>' +
 			'<td class="text-right" width="20%">' +
-				'<a href="#" class="jsAddNewRange">Pridat Dalši</a>' +
+				'<a href="#" class="jsAddNewRange">Pridat Dalši</a>&nbsp;&nbsp;' +
 				'<a href="#" class="jsRemoveRangeRow">Odstranit</a>' +
 			'</td>' +
 		'</tr>';

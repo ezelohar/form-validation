@@ -3,19 +3,42 @@ var NotifierManager = function() {
 }
 
 
+/**
+ * Show single notification
+ * @param notification
+ * @param type
+ */
 NotifierManager.prototype.display = function(notification, type) {
-	this.notification = notification;
-	this.type = type;
 	var displayClass = 'success';
-	if (this.isError()) {
+	if (this.isError(type)) {
 		displayClass = 'error';
 	}
 
-	var notification = '';
+	$('#myModal').removeClass('error');
+	var bodyContent = '', content = [];
 
-	alert(this.notification);
+	if (this.isError(type)) {
+		$('#myModalLabel').html('Ups something went wrong!');
+		content = notification
+	} else {
+		content = notification
+		$('#myModalLabel').html('Information')
+	}
+
+	$('#myModal').addClass(displayClass);
+
+
+	$('#myModalBody').html(content);
+
+	$('#myModal').modal('toggle');
 }
 
+/**
+ * Add notifications to queeue and display them all
+ * @param notification
+ * @param type
+ * @param object
+ */
 NotifierManager.prototype.prepare = function (notification, type, object) {
 	if (typeof type == 'undefined') {
 		type = 'success';
@@ -32,13 +55,31 @@ NotifierManager.prototype.prepare = function (notification, type, object) {
 	})
 }
 
-NotifierManager.prototype.flush = function () {
 
+/**
+ * Display queeed notifications
+ */
+NotifierManager.prototype.flush = function () {
+	var str = '', self = this;
+
+
+	$.each(this.notifications, function (i, item) {
+		var cssClass = (self.isError(item.type)) ? 'error' : 'success';
+		str += '<span class=' + cssClass + '>' + item.notification + '</span>';
+	});
+
+
+	$('#myModalLabel').html('Information')
+
+	$('#myModalBody').html(str);
+
+	$('#myModal').modal('toggle');
 }
 
 
 
-NotifierManager.prototype.isError = function() {
-	return this.type === NOTIFIER_ERROR;
+
+NotifierManager.prototype.isError = function(type) {
+	return type === NOTIFIER_ERROR;
 }
 

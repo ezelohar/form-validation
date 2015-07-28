@@ -18,15 +18,25 @@ abstract class Model
 	 */
 	protected $_db;
 
+	protected $store_id = 1;
+
 	public function __construct()
 	{
 		$this->_db = Database::getInstance()->getDB();
 	}
 
-	protected $_validate = array();
+
+	protected function getStoreID() {
+		return $this->store_id;
+	}
 
 
-	protected function cleanVars($vars) {
+	/**
+	 * Takes array of class variables and return only those who are used as an table columns
+	 * @param $vars
+	 * @return array
+	 */
+	protected function cleanVars(array $vars) {
 		$returnVars = array();
 		foreach($vars as $key=>$val) {
 			if ($key[0] !== '_') {
@@ -37,14 +47,19 @@ abstract class Model
 		return $returnVars;
 	}
 
-
+	/**
+	 * Fetch one item from Databsase based on it's ID
+	 * @param $id
+	 * @param $table
+	 * @return array
+	 */
 	public function fetchOne($id, $table)
 	{
 		$query = "SELECT * FROM " . $table;
-		$query .= ' WHERE id = ?';
+		$query .= ' WHERE id = ? AND store_id = ?';
 
 		$preparedObj = $this->_db->prepare($query);
-		$preparedObj->bind_param('i', $id);
+		$preparedObj->bind_param('ii', $id, $this->store_id);
 		$preparedObj->execute();
 
 		$results = $preparedObj->get_result();
@@ -52,13 +67,18 @@ abstract class Model
 		return $this->result_array($results);
 	}
 
-
+	/**
+	 * Set row's active field to 0. We don't delete rows from database for sake of keeping it consistent
+	 * @param $id
+	 * @param $table
+	 * @return array
+	 */
 	public function delete($id, $table) {
 		$query = "UPDATE " . $table;
-		$query .= ' SET active = 0 WHERE id = ?';
+		$query .= ' SET active = 0 WHERE id = ? AND store_id = ?';
 
 		$preparedObj = $this->_db->prepare($query);
-		$preparedObj->bind_param('i', $id);
+		$preparedObj->bind_param('ii', $id, $this->store_id);
 		$preparedObj->execute();
 
 		$results = $preparedObj->get_result();
@@ -66,11 +86,15 @@ abstract class Model
 		return $this->result_array($results);
 	}
 
-	abstract public function prepareVars($data);
+	/**
+	 * Function used to validate and prepare data which will be insert into database after
+	 * @param $data
+	 */
+	abstract protected function prepareVars(array $data);
 
 
 	/**
-	 *
+	 * Return array of results
 	 * @param $result mysqli resource object
 	 * @return array
 	 */

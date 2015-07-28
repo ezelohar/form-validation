@@ -1,4 +1,6 @@
 var RangeController = function ($methodHolder, methodID) {
+	this.deletedRows = [];
+
 	this.bindEvents();
 };
 
@@ -19,8 +21,14 @@ RangeController.prototype.bindEvents = function() {
 
 			var methodRangeTableBoy = $(this).parent().parent().parent();
 
+			var element = $(this).parent().parent();
+
+			if (parseInt(element.find('input[name="id"]').val()) > 0) {
+				self.deletedRows.push({id: parseInt(element.find('input[name="id"]').val())})
+			}
+
 			/* delete current row */
-			$(this).parent().parent().remove();
+			element.remove();
 
 			/* no ranges found anymore */
 			if (!methodRangeTableBoy.find('tr').length) {

@@ -68,11 +68,18 @@ FormController.prototype.bindEvents = function () {
 		var parent = $(this).parent().parent();
 		var subTableElement = self.getSubTableElement(parent, 'fv-options-holder');
 
-		parent.toggleClass('fv-display-actions');
+
 
 		if ($(this).hasClass('fv-button-active')) {
 			subTableElement.hide();
+			if (parent.hasClass('fv-display-actions')) {
+				parent.removeClass('fv-display-actions');
+			}
 		} else {
+			if (!parent.hasClass('fv-display-actions')) {
+				parent.addClass('fv-display-actions');
+			}
+
 			if (subTableElement !== false) {
 				subTableElement.show();
 			} else {
@@ -172,6 +179,8 @@ FormController.prototype.saveForm = function () {
 				error = true;
 			}
 			methodRow.ranges = ranges;
+		} else if ($(item).hasClass('fv-show-range')) {
+			methodRow.status = DELIVERY_METHOD_RANGE;
 		} else if ($.trim(methodRow.fixed_price) === "") {
 			methodRow.status = DELIVERY_METHOD_UNAVAILABLE;
 		} else if ($.trim(methodRow.fixed_price) == 0) {
@@ -195,8 +204,12 @@ FormController.prototype.saveForm = function () {
 	if (!error && Validate.isValid()) {
 		API.save(URL_DELIVERY_METHOD, {
 			save: 'all',
-			data: methodData,
+			data: {
+				methods: methodData,
+				toDelete: Range.deletedRows
+			},
 			callback: function (e) {
+				Notifier.display('Data successfully updated');
 				Form.run();
 			}
 		});
@@ -216,11 +229,9 @@ FormController.prototype.fetchRangesData = function (id) {
 	$.each(trs, function(i, item) {
 		var tr = $(item);
 
-		var inputs = tr.find('input'), emptyEntry = 0;
+		var inputs = tr.find('input'), emptyEntry = 0, obj = {};
 
-		var obj = {
 
-		}
 		$.each(inputs, function(i, input) {
 			input = $(input);
 
@@ -233,16 +244,23 @@ FormController.prototype.fetchRangesData = function (id) {
 				emptyEntry++
 			}
 
+
+
 			obj[input.attr('name')] = input.val();
 		});
 
+		obj.delivery_method_id = id;
+
 		if (inputs.length != emptyEntry) {
+			if (parseInt(obj.id) === 0) {
+				delete obj.id;
+			}
 			rangesData.push(obj);
 		}
 	});
 
 	return rangesData;
-}
+};
 
 /**
  * Fetch options information
@@ -253,6 +271,7 @@ FormController.prototype.fetchMethodOptions = function (id) {
 	var inputs = $('#option_' + id).find('input, textarea'), optionsData = {}, isValid = true;
 	$.each(inputs, function (i, item) {
 		item = $(item);
+
 		/* validate all data, fill up errors in HTML */
 		Validate.validateInput(item, inputs);
 
@@ -263,8 +282,14 @@ FormController.prototype.fetchMethodOptions = function (id) {
 		return false;
 	}
 
+	if (parseInt(optionsData.id) == 0) {
+		delete optionsData.id;
+	}
+
 	optionsData.delivery_method_id = id;
 
 
 	return optionsData;
-}
+};
+
+
