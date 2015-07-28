@@ -382,7 +382,7 @@ class DeliveryMethodRanges extends Model
 		}
 
 		foreach ($data as $key=>$range) {
-			$this->prepareVars($data);
+			$this->prepareVars($range);
 
 			$bind = $statement->bind_param('dddiii', $this->range_from, $this->range_to, $this->price, $this->active, $this->id, $this->store_id);
 

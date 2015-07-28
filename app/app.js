@@ -24,14 +24,15 @@ var NOTIFIER_SUCCESS = 1;
 
 
 /** Initialize  files **/
-
 var Notifier = new NotifierManager();
 var API = new ApiManager();
 var Validate = new ValidateClass();
 
-
+/** Initialize controllers **/
 var Range = new RangeController();
 var Form = new FormController();
+
+/** Run app **/
 Form.run();
 
 
